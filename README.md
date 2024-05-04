@@ -22,7 +22,7 @@ API-Key: bYLnK6Wgwec6pmdvnfJYMTVnPcbNpbRP
 
 7. Copy the API-Key and the File-ID and paste them in this template: <br>
 Further information: https://bytesbin.com/skip-google-drive-virus-scan-warning-large-files/ <br>
-https://www.googleapis.com/drive/v3/files/<file-ID>?alt=media&#38;key=<API-Key> <br>
+https://www.googleapis.com/drive/v3/files/File-ID?alt=media&#38;key=API-Key <br>
 https://www.googleapis.com/drive/v3/files/kl1mpfZPsWG6Oqu8mOcGJsAZAcq3fnT1?alt=media&#38;key=bYLnK6Wgwec6pmdvnfJYMTVnPcbNpbRP <br>
 
 8. After starting and clicking "Create" 
