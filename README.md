@@ -1,6 +1,6 @@
 # FunshyLauncherUtility
 
-This is a Download Utility mainly for GoogleDrive files.
+This is a Launcher mainly for GoogleDrive files. It is able to update and launch files.
 
 In order to setup your project, you can use the following steps:
 
