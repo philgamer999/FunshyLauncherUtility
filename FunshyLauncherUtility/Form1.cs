@@ -214,11 +214,22 @@ namespace FunshyLauncherUtility
             }
             //Download <onlineVersion.txt>
             httpDownloaderTXT = new HttpDownloader(configHolders.configHolders[selectedIndex].versionURL, configsPaths[selectedIndex] + "/onlineVersion.txt");
+            httpDownloaderTXT.DownloadCompleted += HttpDownloaderTXTCheck_DownloadCompleted;
             httpDownloaderTXT.Start();
+        }
 
-            System.Threading.Thread.Sleep(3000);
-            //Set Versions
-            LabelApplicationOnlineVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/onlineVersion.txt");
+        //Download Feedback
+        private void HttpDownloaderTXTCheck_DownloadCompleted(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)delegate { LabelApplicationOnlineVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/onlineVersion.txt"); });
+            }
+            else
+            {
+                //Set Versions
+                LabelApplicationOnlineVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/onlineVersion.txt");
+            }
         }
 
         private void ButtonUpdate_Click(object sender, EventArgs e)

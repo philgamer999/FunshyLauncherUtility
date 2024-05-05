@@ -44,13 +44,11 @@
             this.LabelApplicationLocalVersion = new System.Windows.Forms.Label();
             this.LabelApplicationName = new System.Windows.Forms.Label();
             this.PictureIcon = new System.Windows.Forms.PictureBox();
-            this.PanelControls = new System.Windows.Forms.Panel();
             this.LabelCredit = new System.Windows.Forms.Label();
             this.LabelVersion = new System.Windows.Forms.Label();
             this.PanelLibrary.SuspendLayout();
             this.PanelSelection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureIcon)).BeginInit();
-            this.PanelControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // PanelLibrary
@@ -231,35 +229,24 @@
             this.PictureIcon.TabIndex = 0;
             this.PictureIcon.TabStop = false;
             // 
-            // PanelControls
-            // 
-            this.PanelControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.PanelControls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PanelControls.Controls.Add(this.LabelCredit);
-            this.PanelControls.Controls.Add(this.LabelVersion);
-            this.PanelControls.Location = new System.Drawing.Point(12, 442);
-            this.PanelControls.Name = "PanelControls";
-            this.PanelControls.Size = new System.Drawing.Size(628, 66);
-            this.PanelControls.TabIndex = 2;
-            // 
             // LabelCredit
             // 
             this.LabelCredit.AutoSize = true;
             this.LabelCredit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LabelCredit.Location = new System.Drawing.Point(3, 51);
+            this.LabelCredit.Location = new System.Drawing.Point(9, 452);
             this.LabelCredit.Name = "LabelCredit";
             this.LabelCredit.Size = new System.Drawing.Size(33, 13);
-            this.LabelCredit.TabIndex = 1;
+            this.LabelCredit.TabIndex = 3;
             this.LabelCredit.Text = "credit";
             // 
             // LabelVersion
             // 
             this.LabelVersion.AutoSize = true;
             this.LabelVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LabelVersion.Location = new System.Drawing.Point(3, 38);
+            this.LabelVersion.Location = new System.Drawing.Point(9, 439);
             this.LabelVersion.Name = "LabelVersion";
             this.LabelVersion.Size = new System.Drawing.Size(49, 13);
-            this.LabelVersion.TabIndex = 0;
+            this.LabelVersion.TabIndex = 2;
             this.LabelVersion.Text = "v.0.0.0.0";
             // 
             // MainWindow
@@ -267,15 +254,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
-            this.ClientSize = new System.Drawing.Size(654, 516);
-            this.Controls.Add(this.PanelControls);
+            this.ClientSize = new System.Drawing.Size(654, 471);
+            this.Controls.Add(this.LabelCredit);
+            this.Controls.Add(this.LabelVersion);
             this.Controls.Add(this.PanelSelection);
             this.Controls.Add(this.PanelLibrary);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(670, 555);
-            this.MinimumSize = new System.Drawing.Size(670, 555);
+            this.MaximumSize = new System.Drawing.Size(670, 510);
+            this.MinimumSize = new System.Drawing.Size(670, 510);
             this.Name = "MainWindow";
             this.Text = "FunshyLauncherUtility";
             this.Load += new System.EventHandler(this.MainWindow_Load);
@@ -283,9 +271,8 @@
             this.PanelSelection.ResumeLayout(false);
             this.PanelSelection.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureIcon)).EndInit();
-            this.PanelControls.ResumeLayout(false);
-            this.PanelControls.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -293,9 +280,6 @@
 
         private System.Windows.Forms.Panel PanelLibrary;
         private System.Windows.Forms.Panel PanelSelection;
-        private System.Windows.Forms.Panel PanelControls;
-        private System.Windows.Forms.Label LabelCredit;
-        private System.Windows.Forms.Label LabelVersion;
         private System.Windows.Forms.PictureBox PictureIcon;
         private System.Windows.Forms.FlowLayoutPanel FlowPanelApplications;
         private System.Windows.Forms.Label LabelApplicationName;
@@ -309,6 +293,8 @@
         private System.Windows.Forms.Button ButtonCheck;
         private System.Windows.Forms.Label LabelApplicationOnlineVersion;
         private System.Windows.Forms.Button ButtonCreateApplication;
+        private System.Windows.Forms.Label LabelCredit;
+        private System.Windows.Forms.Label LabelVersion;
     }
 }
 
