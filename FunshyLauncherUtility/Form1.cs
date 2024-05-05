@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace FunshyLauncherUtility
@@ -19,13 +20,25 @@ namespace FunshyLauncherUtility
     public partial class MainWindow : Form
     {
         ConfigHolders configHolders = new ConfigHolders();
+        SettingsHolder settingsHolder = new SettingsHolder();
+        ThemeHolder themeHolder = new ThemeHolder();
         AddApplication addApplication;
+
+        private Color colorBackground;
+        private Color colorPanel;
+        private Color colorBox;
+        private Color colorButton;
+        private Color colorText;
+        private Color colorProgressBar;
 
         private string dataPath;
         
-        private string settingsPath;
+        private string settingsLibraryPath;
         private string configLibraryPath;
         private string appLibraryPath;
+
+        private string settingsXMLPath;
+        private string themesXMLPath;
 
         private List<string> configsPaths = new List<string>();
         private List<string> appPaths = new List<string>();
@@ -49,14 +62,20 @@ namespace FunshyLauncherUtility
             SetPaths();
             StructureCheck();
             LoadConfigs();
+            LoadThemes();
+            LoadSettings();
+            SetSettings();
         }
 
         private void SetPaths()
         {
             dataPath = Application.StartupPath + "/data";
-            settingsPath = dataPath + "/settigns";
+            settingsLibraryPath = dataPath + "/settings";
             configLibraryPath = dataPath + "/configLibrary";
             appLibraryPath = dataPath + "/appLibrary";
+            settingsXMLPath = $"{settingsLibraryPath}/settings.xml";
+            themesXMLPath = $"{settingsLibraryPath}/themes.xml";
+
         }
 
         private void StructureCheck()
@@ -66,9 +85,9 @@ namespace FunshyLauncherUtility
                 Directory.CreateDirectory(dataPath);
             }
 
-            if (!Directory.Exists(settingsPath)) //settings Directory
+            if (!Directory.Exists(settingsLibraryPath)) //settings Directory
             {
-                Directory.CreateDirectory(settingsPath);
+                Directory.CreateDirectory(settingsLibraryPath);
             }
 
             if (!Directory.Exists(configLibraryPath)) //configLibrary Directory
@@ -79,6 +98,40 @@ namespace FunshyLauncherUtility
             if (!Directory.Exists(appLibraryPath)) //appLibrary Directory
             {
                 Directory.CreateDirectory(appLibraryPath);
+            }
+
+            if (!File.Exists(settingsXMLPath))
+            {
+                settingsHolder.themeIndex = 0;
+                settingsHolder.versionHistoryEnabled = false;
+                settingsHolder.startPosition = new Point(0, 0);
+                settingsHolder.pinOnStartEnabled = false;
+                File.WriteAllText(settingsXMLPath, $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<SettingsHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <themeIndex>0</themeIndex>\r\n  <versionHistoryEnabled>false</versionHistoryEnabled>\r\n  <startPosition>\r\n    <X>0</X>\r\n    <Y>0</Y>\r\n  </startPosition>\r\n  <pinOnStartEnabled>false</pinOnStartEnabled>\r\n</SettingsHolder>");
+            }
+
+            if (!File.Exists(themesXMLPath))
+            {
+                File.WriteAllText(themesXMLPath, $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ThemeHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <backgroundHEX>\r\n    <string>#101010</string>\r\n    <string>#ffffff</string>\r\n  </backgroundHEX>\r\n  <panelHEX>\r\n    <string>#141414</string>\r\n    <string>#ffffff</string>\r\n  </panelHEX>\r\n  <boxHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </boxHEX>\r\n  <buttonHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </buttonHEX>\r\n  <textHEX>\r\n    <string>#646464</string>\r\n    <string>#ffffff</string>\r\n  </textHEX>\r\n  <progressBarBackgroundHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </progressBarBackgroundHEX>\r\n</ThemeHolder>");
+                string[] cbackground = new string[2] { "#101010", "#ffffff" };
+                themeHolder.backgroundHEX.Clear();
+                themeHolder.backgroundHEX.AddRange(cbackground);
+                string[] cPanel = new string[2] { "#141414", "#ffffff" };
+                themeHolder.panelHEX.Clear();
+                themeHolder.panelHEX.AddRange(cPanel);
+                string[] cBox = new string[2] { "#191919", "#ffffff" };
+                themeHolder.boxHEX.Clear();
+                themeHolder.boxHEX.AddRange(cBox);
+                string[] cButton = new string[2] { "#191919", "#ffffff" };
+                themeHolder.buttonHEX.Clear();
+                themeHolder.buttonHEX.AddRange(cButton);
+                string[] cText = new string[2] { "#646464", "#ffffff" };
+                themeHolder.textHEX.Clear();
+                themeHolder.textHEX.AddRange(cText);
+                string[] cProgressBar = new string[2] { "#191919", "#ffffff" };
+                themeHolder.progressBarBackgroundHEX.Clear();
+                themeHolder.progressBarBackgroundHEX.AddRange(cProgressBar);
+
+                SaveThemes();
             }
         }
 
@@ -114,6 +167,126 @@ namespace FunshyLauncherUtility
 
                     LoadList();
                 }
+            }
+        }
+
+        private void LoadSettings()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)delegate { LoadConfigs(); });
+            }
+            else
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SettingsHolder));
+
+                StreamReader reader = new StreamReader(settingsXMLPath);
+                try
+                {
+                    var result = (SettingsHolder)(serializer.Deserialize(reader));
+                    settingsHolder = result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                reader.Dispose();
+            }
+        }
+
+        public void SaveSettings()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)delegate { SaveSettings(); });
+            }
+            else
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SettingsHolder));
+
+                StreamWriter writer = new StreamWriter(settingsXMLPath);
+
+                serializer.Serialize(writer, settingsHolder);
+                writer.Dispose();
+            }
+        }
+
+        public void SetSettings()
+        {
+            colorBackground = ColorTranslator.FromHtml(themeHolder.backgroundHEX[settingsHolder.themeIndex]);
+            colorPanel = ColorTranslator.FromHtml(themeHolder.panelHEX[settingsHolder.themeIndex]);
+            colorBox = ColorTranslator.FromHtml(themeHolder.boxHEX[settingsHolder.themeIndex]);
+            colorButton = ColorTranslator.FromHtml(themeHolder.buttonHEX[settingsHolder.themeIndex]);
+            colorText = ColorTranslator.FromHtml(themeHolder.textHEX[settingsHolder.themeIndex]);
+            colorProgressBar = ColorTranslator.FromHtml(themeHolder.progressBarBackgroundHEX[settingsHolder.themeIndex]);
+            SetVisualsTheme();
+        }
+
+        private void SetVisualsTheme()
+        {
+            this.BackColor = colorBackground;
+
+            PanelLibrary.BackColor = colorPanel;
+            PanelSelection.BackColor = colorPanel;
+
+            FlowPanelApplications.BackColor = colorBox;
+            TextBoxDescription.BackColor = colorBox;
+
+            ButtonApplicationLaunch.BackColor = colorButton;
+            ButtonCheck.BackColor = colorButton;
+            ButtonUpdate.BackColor = colorButton;
+            ButtonCreateApplication.BackColor = colorButton;
+
+            ButtonApplicationLaunch.ForeColor = colorText;
+            ButtonCheck.ForeColor = colorText;
+            ButtonUpdate.ForeColor = colorText;
+            ButtonCreateApplication.ForeColor = colorText;
+            LabelCredit.ForeColor = colorText;
+            LabelVersion.ForeColor = colorText;
+            LabelApplicationName.ForeColor = colorText;
+            LabelApplicationLocalVersion.ForeColor = colorText;
+            LabelApplicationOnlineVersion.ForeColor = colorText;
+            StateLabel.ForeColor = colorText;
+        }
+
+        private void LoadThemes()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)delegate { LoadConfigs(); });
+            }
+            else
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ThemeHolder));
+
+                StreamReader reader = new StreamReader(themesXMLPath);
+                try
+                {
+                    var result = (ThemeHolder)(serializer.Deserialize(reader));
+                    themeHolder = result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                reader.Dispose();
+            }
+        }
+
+        public void SaveThemes()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action)delegate { SaveThemes(); });
+            }
+            else
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ThemeHolder));
+
+                StreamWriter writer = new StreamWriter(themesXMLPath);
+
+                serializer.Serialize(writer, themeHolder);
+                writer.Dispose();
             }
         }
 
@@ -294,6 +467,12 @@ namespace FunshyLauncherUtility
         {
             addApplication = new AddApplication();
             addApplication.Show();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            SaveSettings();
+            SaveThemes();
         }
     }
 }
