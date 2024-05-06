@@ -23,6 +23,7 @@ namespace FunshyLauncherUtility
         SettingsHolder settingsHolder = new SettingsHolder();
         ThemeHolder themeHolder = new ThemeHolder();
         AddApplication addApplication;
+        AddTheme addTheme;
 
         private Color colorBackground;
         private Color colorPanel;
@@ -111,7 +112,11 @@ namespace FunshyLauncherUtility
 
             if (!File.Exists(themesXMLPath))
             {
-                File.WriteAllText(themesXMLPath, $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ThemeHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <backgroundHEX>\r\n    <string>#101010</string>\r\n    <string>#ffffff</string>\r\n  </backgroundHEX>\r\n  <panelHEX>\r\n    <string>#141414</string>\r\n    <string>#ffffff</string>\r\n  </panelHEX>\r\n  <boxHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </boxHEX>\r\n  <buttonHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </buttonHEX>\r\n  <textHEX>\r\n    <string>#646464</string>\r\n    <string>#ffffff</string>\r\n  </textHEX>\r\n  <progressBarBackgroundHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </progressBarBackgroundHEX>\r\n</ThemeHolder>");
+                File.WriteAllText(themesXMLPath, $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ThemeHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <themesName>\r\n    <string>Dark</string>\r\n    <string>Light</string>\r\n  </themesName>\r\n  <backgroundHEX>\r\n    <string>#101010</string>\r\n    <string>#ffffff</string>\r\n  </backgroundHEX>\r\n  <panelHEX>\r\n    <string>#141414</string>\r\n    <string>#ffffff</string>\r\n  </panelHEX>\r\n  <boxHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </boxHEX>\r\n  <buttonHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </buttonHEX>\r\n  <textHEX>\r\n    <string>#646464</string>\r\n    <string>#ffffff</string>\r\n  </textHEX>\r\n  <progressBarBackgroundHEX>\r\n    <string>#191919</string>\r\n    <string>#ffffff</string>\r\n  </progressBarBackgroundHEX>\r\n</ThemeHolder>");
+
+                string[] names = new string[2] { "Dark", "Light" };
+                themeHolder.themesName.Clear();
+                themeHolder.themesName.AddRange(names);
                 string[] cbackground = new string[2] { "#101010", "#ffffff" };
                 themeHolder.backgroundHEX.Clear();
                 themeHolder.backgroundHEX.AddRange(cbackground);
@@ -236,6 +241,8 @@ namespace FunshyLauncherUtility
             ButtonCheck.BackColor = colorButton;
             ButtonUpdate.BackColor = colorButton;
             ButtonCreateApplication.BackColor = colorButton;
+            ComboBoxThemes.BackColor = colorButton;
+            ButtonCreateTheme.BackColor = colorButton;
 
             ButtonApplicationLaunch.ForeColor = colorText;
             ButtonCheck.ForeColor = colorText;
@@ -247,6 +254,17 @@ namespace FunshyLauncherUtility
             LabelApplicationLocalVersion.ForeColor = colorText;
             LabelApplicationOnlineVersion.ForeColor = colorText;
             StateLabel.ForeColor = colorText;
+            ComboBoxThemes.ForeColor = colorText;
+            ButtonCreateTheme.ForeColor = colorText;
+
+            foreach (Button button in FlowPanelApplications.Controls)
+            {
+                button.BackColor = colorButton;
+                button.ForeColor = colorText;
+            }
+
+            DownloadProgressBar.BackColor = colorButton;
+            DownloadProgressBar.ForeColor = colorProgressBar;
         }
 
         private void LoadThemes()
@@ -270,7 +288,19 @@ namespace FunshyLauncherUtility
                     Console.WriteLine(ex.ToString());
                 }
                 reader.Dispose();
+
+                SetThemes();
             }
+        }
+
+        private void SetThemes()
+        {
+            ComboBoxThemes.Items.Clear();
+            foreach (string name in themeHolder.themesName)
+            {
+                ComboBoxThemes.Items.Add(name);
+            }
+            ComboBoxThemes.SelectedIndex = settingsHolder.themeIndex;
         }
 
         public void SaveThemes()
@@ -297,8 +327,8 @@ namespace FunshyLauncherUtility
             {
                 Button libraryBtn = new Button();
                 libraryBtn.Size = new Size(100, 20);
-                libraryBtn.BackColor = Color.FromArgb(25, 25, 25);
-                libraryBtn.ForeColor = Color.FromArgb(100, 100, 100);
+                libraryBtn.BackColor = colorButton;
+                libraryBtn.ForeColor = colorText;
                 libraryBtn.FlatStyle = FlatStyle.Popup;
                 libraryBtn.TextAlign = ContentAlignment.BottomCenter;
                 libraryBtn.Text = Path.GetFileNameWithoutExtension(configsPaths[i]);
@@ -350,6 +380,22 @@ namespace FunshyLauncherUtility
             addApplication.Close();
 
             LoadConfigs();
+        }
+
+        public void CreateTheme(string name, string background, string panel, string box, string button, string text, string progressbar)
+        {
+            themeHolder.themesName.Add(name);
+            themeHolder.backgroundHEX.Add(background);
+            themeHolder.panelHEX.Add(panel);
+            themeHolder.boxHEX.Add(box);
+            themeHolder.buttonHEX.Add(button);
+            themeHolder.textHEX.Add(text);
+            themeHolder.progressBarBackgroundHEX.Add(progressbar);
+
+            SaveThemes();
+            SetThemes();
+
+            addTheme.Close();
         }
 
         private void LibraryButton_Click(object sender, EventArgs e)
@@ -467,6 +513,18 @@ namespace FunshyLauncherUtility
         {
             addApplication = new AddApplication();
             addApplication.Show();
+        }
+
+        private void ComboBoxThemes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settingsHolder.themeIndex = ComboBoxThemes.SelectedIndex;
+            SetSettings();
+        }
+
+        private void ButtonCreateTheme_Click(object sender, EventArgs e)
+        {
+            addTheme = new AddTheme();
+            addTheme.Show();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

@@ -29,6 +29,7 @@ namespace FunshyLauncherUtility
 
     public class ThemeHolder
     {
+        public List<string> themesName = new List<string>();
         public List<string> backgroundHEX = new List<string>();
         public List<string> panelHEX = new List<string>();
         public List<string> boxHEX = new List<string>();

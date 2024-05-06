@@ -46,6 +46,8 @@
             this.PictureIcon = new System.Windows.Forms.PictureBox();
             this.LabelCredit = new System.Windows.Forms.Label();
             this.LabelVersion = new System.Windows.Forms.Label();
+            this.ComboBoxThemes = new System.Windows.Forms.ComboBox();
+            this.ButtonCreateTheme = new System.Windows.Forms.Button();
             this.PanelLibrary.SuspendLayout();
             this.PanelSelection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureIcon)).BeginInit();
@@ -249,12 +251,42 @@
             this.LabelVersion.TabIndex = 2;
             this.LabelVersion.Text = "v.0.0.0.0";
             // 
+            // ComboBoxThemes
+            // 
+            this.ComboBoxThemes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
+            this.ComboBoxThemes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxThemes.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ComboBoxThemes.FormattingEnabled = true;
+            this.ComboBoxThemes.Items.AddRange(new object[] {
+            "Dark",
+            "White"});
+            this.ComboBoxThemes.Location = new System.Drawing.Point(160, 443);
+            this.ComboBoxThemes.Name = "ComboBoxThemes";
+            this.ComboBoxThemes.Size = new System.Drawing.Size(121, 21);
+            this.ComboBoxThemes.TabIndex = 4;
+            this.ComboBoxThemes.SelectedIndexChanged += new System.EventHandler(this.ComboBoxThemes_SelectedIndexChanged);
+            // 
+            // ButtonCreateTheme
+            // 
+            this.ButtonCreateTheme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.ButtonCreateTheme.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ButtonCreateTheme.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ButtonCreateTheme.Location = new System.Drawing.Point(287, 443);
+            this.ButtonCreateTheme.Name = "ButtonCreateTheme";
+            this.ButtonCreateTheme.Size = new System.Drawing.Size(86, 23);
+            this.ButtonCreateTheme.TabIndex = 21;
+            this.ButtonCreateTheme.Text = "Create Theme";
+            this.ButtonCreateTheme.UseVisualStyleBackColor = false;
+            this.ButtonCreateTheme.Click += new System.EventHandler(this.ButtonCreateTheme_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.ClientSize = new System.Drawing.Size(654, 471);
+            this.Controls.Add(this.ButtonCreateTheme);
+            this.Controls.Add(this.ComboBoxThemes);
             this.Controls.Add(this.LabelCredit);
             this.Controls.Add(this.LabelVersion);
             this.Controls.Add(this.PanelSelection);
@@ -295,6 +327,8 @@
         private System.Windows.Forms.Button ButtonCreateApplication;
         private System.Windows.Forms.Label LabelCredit;
         private System.Windows.Forms.Label LabelVersion;
+        private System.Windows.Forms.ComboBox ComboBoxThemes;
+        private System.Windows.Forms.Button ButtonCreateTheme;
     }
 }
 
