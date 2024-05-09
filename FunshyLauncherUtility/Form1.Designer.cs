@@ -122,7 +122,7 @@
             // DownloadPercentage
             // 
             this.DownloadPercentage.AutoSize = true;
-            this.DownloadPercentage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.DownloadPercentage.BackColor = System.Drawing.Color.Transparent;
             this.DownloadPercentage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DownloadPercentage.Location = new System.Drawing.Point(382, 380);
             this.DownloadPercentage.Name = "DownloadPercentage";
@@ -142,7 +142,7 @@
             // 
             this.StateLabel.AccessibleName = "StateLabel";
             this.StateLabel.AutoSize = true;
-            this.StateLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.StateLabel.BackColor = System.Drawing.Color.Transparent;
             this.StateLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.StateLabel.Location = new System.Drawing.Point(286, 362);
             this.StateLabel.Name = "StateLabel";
