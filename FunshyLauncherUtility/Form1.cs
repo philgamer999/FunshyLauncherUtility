@@ -251,6 +251,7 @@ namespace FunshyLauncherUtility
             ButtonCreateApplication.BackColor = colorButton;
             ComboBoxThemes.BackColor = colorButton;
             ButtonCreateTheme.BackColor = colorButton;
+            ButtonDeleteApplication.BackColor = colorButton;
 
             ButtonApplicationLaunch.ForeColor = colorText;
             ButtonCheck.ForeColor = colorText;
@@ -264,6 +265,10 @@ namespace FunshyLauncherUtility
             StateLabel.ForeColor = colorText;
             ComboBoxThemes.ForeColor = colorText;
             ButtonCreateTheme.ForeColor = colorText;
+            if (libraryState == LibraryState.Normal)
+            {
+                ButtonDeleteApplication.ForeColor = colorText;
+            }
 
             foreach (Button button in FlowPanelApplications.Controls)
             {
@@ -375,7 +380,10 @@ namespace FunshyLauncherUtility
             File.WriteAllText($"{configLibraryPath}/{name}/description.txt", description);
 
             File.WriteAllText($"{configLibraryPath}/{name}/config.xml", $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ConfigHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <downloadURL>{downloadLink}</downloadURL>\r\n  <versionURL>{versionLink}</versionURL>\r\n  <executableName>{executableName}</executableName>\r\n</ConfigHolder>\r\n<!--https://www.googleapis.com/drive/v3/files/<FileID>?alt=media&#38;key=<APIKey>-->");
-            File.Copy(iconPath, $"{configLibraryPath}/{name}/icon.png");
+            if (iconPath != null)
+            {
+                File.Copy(iconPath, $"{configLibraryPath}/{name}/icon.png");
+            }
 
             File.WriteAllText($"{configLibraryPath}/{name}/localVersion.txt", "0.0.0.0");
             File.WriteAllText($"{configLibraryPath}/{name}/onlineVersion.txt", "0.0.0.0");
@@ -405,9 +413,9 @@ namespace FunshyLauncherUtility
         {
             Console.WriteLine(sender.ToString());
             Button clickedButton = (Button)sender;
+            selectedIndex = int.Parse(clickedButton.Tag.ToString());
             if (libraryState == LibraryState.Normal)
             {
-                selectedIndex = int.Parse(clickedButton.Tag.ToString());
                 if (File.Exists(configsPaths[selectedIndex] + "/icon.png"))
                 {
                     PictureIcon.BackgroundImage = Image.FromFile(configsPaths[selectedIndex] + "/icon.png");
@@ -428,7 +436,27 @@ namespace FunshyLauncherUtility
             }
             else if (libraryState == LibraryState.Delete)
             {
+                //
+                FlowPanelApplications.Controls.RemoveAt(selectedIndex);
+                /*DirectoryInfo dirConfig = new DirectoryInfo(configsPaths[selectedIndex]);
+                DirectoryInfo dirApplication = new DirectoryInfo(appPaths[selectedIndex]);
 
+                dirConfig.Delete();
+                dirApplication.Delete();*/
+                PictureIcon.BackgroundImage = null;
+
+                Directory.Delete(configsPaths[selectedIndex], true);
+                Directory.Delete(appPaths[selectedIndex], true);
+
+                if (selectedIndex-1 > 0)
+                {
+                    selectedIndex = selectedIndex - 1;
+                }
+                else
+                {
+                    selectedIndex = 0;
+                }
+                LoadConfigs();
             }
         }
 
@@ -522,6 +550,20 @@ namespace FunshyLauncherUtility
         {
             addApplication = new AddApplication();
             addApplication.Show();
+        }
+
+        private void ButtonDeleteApplication_Click(object sender, EventArgs e)
+        {
+            if (libraryState == LibraryState.Normal)
+            {
+                libraryState = LibraryState.Delete;
+                ButtonDeleteApplication.ForeColor = Color.FromArgb(255, 0, 0);
+            }else if (libraryState == LibraryState.Delete)
+            {
+                libraryState = LibraryState.Normal;
+                ButtonDeleteApplication.ForeColor = colorText;
+            }
+
         }
 
         private void ComboBoxThemes_SelectedIndexChanged(object sender, EventArgs e)

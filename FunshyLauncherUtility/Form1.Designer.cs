@@ -48,6 +48,7 @@
             this.LabelVersion = new System.Windows.Forms.Label();
             this.ComboBoxThemes = new System.Windows.Forms.ComboBox();
             this.ButtonCreateTheme = new System.Windows.Forms.Button();
+            this.ButtonDeleteApplication = new System.Windows.Forms.Button();
             this.PanelLibrary.SuspendLayout();
             this.PanelSelection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureIcon)).BeginInit();
@@ -57,6 +58,7 @@
             // 
             this.PanelLibrary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.PanelLibrary.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PanelLibrary.Controls.Add(this.ButtonDeleteApplication);
             this.PanelLibrary.Controls.Add(this.ButtonCreateApplication);
             this.PanelLibrary.Controls.Add(this.FlowPanelApplications);
             this.PanelLibrary.Location = new System.Drawing.Point(12, 12);
@@ -69,9 +71,9 @@
             this.ButtonCreateApplication.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.ButtonCreateApplication.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ButtonCreateApplication.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ButtonCreateApplication.Location = new System.Drawing.Point(34, 396);
+            this.ButtonCreateApplication.Location = new System.Drawing.Point(6, 396);
             this.ButtonCreateApplication.Name = "ButtonCreateApplication";
-            this.ButtonCreateApplication.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCreateApplication.Size = new System.Drawing.Size(65, 23);
             this.ButtonCreateApplication.TabIndex = 20;
             this.ButtonCreateApplication.Text = "Create";
             this.ButtonCreateApplication.UseVisualStyleBackColor = false;
@@ -279,6 +281,19 @@
             this.ButtonCreateTheme.UseVisualStyleBackColor = false;
             this.ButtonCreateTheme.Click += new System.EventHandler(this.ButtonCreateTheme_Click);
             // 
+            // ButtonDeleteApplication
+            // 
+            this.ButtonDeleteApplication.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.ButtonDeleteApplication.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ButtonDeleteApplication.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.ButtonDeleteApplication.Location = new System.Drawing.Point(72, 396);
+            this.ButtonDeleteApplication.Name = "ButtonDeleteApplication";
+            this.ButtonDeleteApplication.Size = new System.Drawing.Size(65, 23);
+            this.ButtonDeleteApplication.TabIndex = 21;
+            this.ButtonDeleteApplication.Text = "Delete";
+            this.ButtonDeleteApplication.UseVisualStyleBackColor = false;
+            this.ButtonDeleteApplication.Click += new System.EventHandler(this.ButtonDeleteApplication_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,6 +344,7 @@
         private System.Windows.Forms.Label LabelVersion;
         private System.Windows.Forms.ComboBox ComboBoxThemes;
         private System.Windows.Forms.Button ButtonCreateTheme;
+        private System.Windows.Forms.Button ButtonDeleteApplication;
     }
 }
 
