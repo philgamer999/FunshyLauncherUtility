@@ -224,6 +224,7 @@ namespace FunshyLauncherUtility
             colorButton = ColorTranslator.FromHtml(themeHolder.buttonHEX[settingsHolder.themeIndex]);
             colorText = ColorTranslator.FromHtml(themeHolder.textHEX[settingsHolder.themeIndex]);
             colorProgressBar = ColorTranslator.FromHtml(themeHolder.progressBarBackgroundHEX[settingsHolder.themeIndex]);
+            this.Location = settingsHolder.startPosition;
             SetVisualsTheme();
         }
 
@@ -529,6 +530,7 @@ namespace FunshyLauncherUtility
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
+            settingsHolder.startPosition = this.Location;
             SaveSettings();
             SaveThemes();
         }
