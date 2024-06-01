@@ -373,24 +373,31 @@ namespace FunshyLauncherUtility
 
         public void CreateApplication(string name, string executableName, string downloadLink, string versionLink, string description, string iconPath)
         {
-            Directory.CreateDirectory($"{configLibraryPath}/{name}");
-            Directory.CreateDirectory($"{appLibraryPath}/{name}");
-
-
-            File.WriteAllText($"{configLibraryPath}/{name}/description.txt", description);
-
-            File.WriteAllText($"{configLibraryPath}/{name}/config.xml", $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ConfigHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <downloadURL>{downloadLink}</downloadURL>\r\n  <versionURL>{versionLink}</versionURL>\r\n  <executableName>{executableName}</executableName>\r\n</ConfigHolder>\r\n<!--https://www.googleapis.com/drive/v3/files/<FileID>?alt=media&#38;key=<APIKey>-->");
-            if (iconPath != null)
+            if (name != string.Empty && name != "Enter Name..." && executableName != string.Empty && executableName != "Enter Executable Name..." && downloadLink != string.Empty && downloadLink != "Enter Download Link..." && versionLink != string.Empty && versionLink != "Enter Version Link...")
             {
-                File.Copy(iconPath, $"{configLibraryPath}/{name}/icon.png");
+                Directory.CreateDirectory($"{configLibraryPath}/{name}");
+                Directory.CreateDirectory($"{appLibraryPath}/{name}");
+
+
+                File.WriteAllText($"{configLibraryPath}/{name}/description.txt", description);
+
+                File.WriteAllText($"{configLibraryPath}/{name}/config.xml", $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<ConfigHolder xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <downloadURL>{downloadLink}</downloadURL>\r\n  <versionURL>{versionLink}</versionURL>\r\n  <executableName>{executableName}</executableName>\r\n</ConfigHolder>\r\n<!--https://www.googleapis.com/drive/v3/files/<FileID>?alt=media&#38;key=<APIKey>-->");
+                if (iconPath != string.Empty)
+                {
+                    File.Copy(iconPath, $"{configLibraryPath}/{name}/icon.png");
+                }
+
+                File.WriteAllText($"{configLibraryPath}/{name}/localVersion.txt", "0.0.0.0");
+                File.WriteAllText($"{configLibraryPath}/{name}/onlineVersion.txt", "0.0.0.0");
+
+                addApplication.Close();
+
+                LoadConfigs();
             }
-
-            File.WriteAllText($"{configLibraryPath}/{name}/localVersion.txt", "0.0.0.0");
-            File.WriteAllText($"{configLibraryPath}/{name}/onlineVersion.txt", "0.0.0.0");
-
-            addApplication.Close();
-
-            LoadConfigs();
+            else
+            {
+                MessageBox.Show("Invalid Input!", "Error");
+            }
         }
 
         public void CreateTheme(string name, string background, string panel, string box, string button, string text, string progressbar)
