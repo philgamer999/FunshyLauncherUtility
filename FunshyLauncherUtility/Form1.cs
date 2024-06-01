@@ -49,6 +49,13 @@ namespace FunshyLauncherUtility
         HttpDownloader httpDownloader;
         HttpDownloader httpDownloaderTXT;
 
+        private enum LibraryState
+        {
+            Normal,
+            Delete    
+        };
+        LibraryState libraryState = LibraryState.Normal;
+
 
         public MainWindow()
         {
@@ -345,12 +352,7 @@ namespace FunshyLauncherUtility
                     pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
                 }
                 libraryBtn.Controls.Add(pictureBox);
-                Label label = new Label();
-                label.Name = "index";
-                label.Enabled = false;
-                label.Visible = false;
-                label.Text = i.ToString();
-                libraryBtn.Controls.Add(label);
+                libraryBtn.Tag = i;
                 FlowPanelApplications.Controls.Add(libraryBtn);
             }
             foreach (string config in configsPaths)
@@ -403,24 +405,30 @@ namespace FunshyLauncherUtility
         {
             Console.WriteLine(sender.ToString());
             Button clickedButton = (Button)sender;
-            Control[] label = clickedButton.Controls.Find("index", true);
-            selectedIndex = int.Parse(label[0].Text);
-            if (File.Exists(configsPaths[selectedIndex] + "/icon.png"))
+            if (libraryState == LibraryState.Normal)
             {
-                PictureIcon.BackgroundImage = Image.FromFile(configsPaths[selectedIndex] + "/icon.png");
+                selectedIndex = int.Parse(clickedButton.Tag.ToString());
+                if (File.Exists(configsPaths[selectedIndex] + "/icon.png"))
+                {
+                    PictureIcon.BackgroundImage = Image.FromFile(configsPaths[selectedIndex] + "/icon.png");
+                }
+                else
+                {
+                    //PictureIcon.Image = settingsPath + "/";
+                }
+                LabelApplicationName.Text = configHolders.configHolders[selectedIndex].executableName;
+                LabelApplicationLocalVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/localVersion.txt");
+                LabelApplicationOnlineVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/onlineVersion.txt");
+                TextBoxDescription.Text = File.ReadAllText(configsPaths[selectedIndex] + "/description.txt");
+                //Check application install
+                if (Directory.GetFiles(appPaths[selectedIndex]).Length == 0)
+                {
+                    StateLabel.Text = "Not installed!";
+                }
             }
-            else
+            else if (libraryState == LibraryState.Delete)
             {
-                //PictureIcon.Image = settingsPath + "/";
-            }
-            LabelApplicationName.Text = configHolders.configHolders[selectedIndex].executableName;
-            LabelApplicationLocalVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/localVersion.txt");
-            LabelApplicationOnlineVersion.Text = File.ReadAllText(configsPaths[selectedIndex] + "/onlineVersion.txt");
-            TextBoxDescription.Text = File.ReadAllText(configsPaths[selectedIndex] + "/description.txt");
-            //Check application install
-            if (Directory.GetFiles(appPaths[selectedIndex]).Length == 0)
-            {
-                StateLabel.Text = "Not installed!";
+
             }
         }
 
